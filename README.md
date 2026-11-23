@@ -43,6 +43,9 @@ bin/TerrainGenerator --self-test
 `tests/terrain_parity.py` regenerates `original/myworld.gmap` and compares it byte for byte. It
 requires that reference file, which is not tracked.
 
+`tests/zoom_parity.py` checks the zoom projection constants against the recomp renderer
+`f_0044d848`; `ctest` runs it when Python is available.
+
 ## Format and pipeline
 
 `docs/terrain-generation.md` documents the seed stream, control grid, border expansion, level
