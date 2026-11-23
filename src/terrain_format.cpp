@@ -149,6 +149,15 @@ namespace terrain {
     row << std::setw(row_digits) << std::setfill('0') << level_y + 1;
     return prefix_and_separator + column + row_separator + row.str() + ".nw";
   }
+  std::string crlf(std::string text) {
+    std::string out;
+    out.reserve(text.size() + text.size() / 16);
+    for (char c : text) {
+      if (c == '\n') out += "\r\n";
+      else out += c;
+    }
+    return out;
+  }
   std::string serialize_terrain_gmap(const TerrainMapDocument& document, bool include_height_overrides) {
     if (document.width < 0 || document.height < 0) throw std::runtime_error("negative terrain map dimensions");
     std::ostringstream output;
@@ -169,7 +178,7 @@ namespace terrain {
     output << "HEIGHTMAPEND\n\nRANDOMSEEDS\n";
     write_grid(output, document.random_seeds, document.height, document.width, [](std::uint32_t value) { return std::to_string(value); });
     output << "RANDOMSEEDSEND\n\n";
-    if (!include_height_overrides) return output.str();
+    if (!include_height_overrides) return crlf(output.str());
     for (const auto& override : document.height_overrides) {
       output << "HEIGHTS " << override.level_name << '\n';
       for (int row = 0; row < 9; ++row) {
@@ -181,12 +190,12 @@ namespace terrain {
       }
       output << "HEIGHTSEND\n";
     }
-    return output.str();
+    return crlf(output.str());
   }
   std::string serialize_terrain_level(std::span<const double, 81> heights, bool include_heights) {
     std::ostringstream output;
     output << "GLEVNW01\n";
-    if (!include_heights) return output.str();
+    if (!include_heights) return crlf(output.str());
     output << "HEIGHTS\n";
     for (int row = 0; row < 9; ++row) {
       for (int column = 0; column < 9; ++column) {
@@ -196,6 +205,6 @@ namespace terrain {
       output << '\n';
     }
     output << "HEIGHTSEND\n";
-    return output.str();
+    return crlf(output.str());
   }
 }
