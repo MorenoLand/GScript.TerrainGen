@@ -15,7 +15,7 @@ EXPECTED_ORIGIN = round(65.0 / 3.0) + MAP_MARGIN
 EXPECTED_WIDTH = PANEL_LEFT - MAP_MARGIN * 2
 EXPECTED_HEIGHT = PANEL_LEFT - EXPECTED_ORIGIN * 2
 EXPECTED_TOP = EXPECTED_ORIGIN + 30
-EXPECTED_DIVISOR = 1.0
+EXPECTED_DIVISOR = 3.0
 
 
 def main():
@@ -34,7 +34,7 @@ def main():
         if actual != expected:
             print("zoom parity: fail %s %s != %s" % (name, actual, expected))
             return 1
-    if "height_divisor=1.0f" not in text:
+    if "height_divisor=3.0f" not in text:
         print("zoom parity: fail height_divisor")
         return 1
     if "(std::min)(4,pw-ox)" not in text or "vw*8" not in text:
