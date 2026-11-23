@@ -8,6 +8,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "tests" / "reference" / "myworld.gmap"
 OUTPUT = ROOT / "build" / "parity-myworld.gmap"
+EXE = ROOT / "bin" / ("TerrainGenerator.exe" if sys.platform == "win32" else "TerrainGenerator")
 
 
 def digest(path):
