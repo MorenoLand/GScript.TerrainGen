@@ -20,12 +20,15 @@ EXPECTED_DIVISOR = 1.0
 
 def main():
     text = SOURCE.read_text(encoding="utf-8")
-    values = {name: int(value) for name, value in re.findall(r"\b(zoom_left|zoom_grid_width|zoom_grid_height|zoom_top)\s*=\s*(\d+)", text)}
+    values = {name: int(value) for name, value in re.findall(r"\b(zoom_left|zoom_grid_width|zoom_grid_height|zoom_top|terrain_width|terrain_height|terrain_top)\s*=\s*(\d+)", text)}
     checks = {
         "zoom_left": (values.get("zoom_left"), MAP_MARGIN),
         "zoom_grid_width": (values.get("zoom_grid_width"), EXPECTED_WIDTH),
         "zoom_grid_height": (values.get("zoom_grid_height"), EXPECTED_HEIGHT),
         "zoom_top": (values.get("zoom_top"), EXPECTED_TOP),
+        "terrain_width": (values.get("terrain_width"), EXPECTED_WIDTH),
+        "terrain_height": (values.get("terrain_height"), EXPECTED_HEIGHT),
+        "terrain_top": (values.get("terrain_top"), EXPECTED_TOP),
     }
     for name, (actual, expected) in checks.items():
         if actual != expected:
