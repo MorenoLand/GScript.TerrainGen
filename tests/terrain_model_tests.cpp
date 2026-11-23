@@ -32,7 +32,7 @@ int terrain_self_test() {
   assert(random.drandseed() == 0x08088406u);
   assert(random.drandi() == static_cast<std::int32_t>(0xdc6dac1fu));
   assert(random.drandseed() == 0xdc6dac1fu);
-  std::ifstream file{TERRAIN_SOURCE_DIR "/original/myworld.gmap"};
+  std::ifstream file{TERRAIN_SOURCE_DIR "/original/myworld.gmap", std::ios::binary};
   const bool has_fixture=static_cast<bool>(file);
   terrain::TerrainMapDocument document;
   if (has_fixture) {
@@ -45,12 +45,7 @@ int terrain_self_test() {
     assert(document.random_seeds.size() == 32 * 32);
     assert(document.random_seeds[32 * 31 + 31] == 1293905230u);
     const auto serialized = terrain::serialize_terrain_gmap(document, false);
-    const auto normalized_fixture = [&fixture] {
-      std::string normalized;
-      for (std::size_t index = 0; index < fixture.size(); ++index) if (fixture[index] != '\r') normalized += fixture[index];
-      return normalized;
-    }();
-    assert(serialized == normalized_fixture);
+    assert(serialized == fixture);
     const auto round_trip = terrain::parse_terrain_gmap(serialized);
     assert(round_trip.width == document.width && round_trip.height == document.height);
     assert(round_trip.map_image == document.map_image);
@@ -65,10 +60,10 @@ int terrain_self_test() {
   assert(override_document.height_overrides[0].level_name == "one_aa.nw");
   assert(override_document.height_overrides[0].samples[80] == 9.0);
   const std::array<double, 81> empty_level{};
-  assert(terrain::serialize_terrain_level(empty_level, false) == "GLEVNW01\n");
+  assert(terrain::serialize_terrain_level(empty_level, false) == "GLEVNW01\r\n");
   const auto level_text = terrain::serialize_terrain_level(override_document.height_overrides[0].samples, true);
-  assert(level_text.starts_with("GLEVNW01\nHEIGHTS\n1,2,3,4,5,6,7,8,9\n"));
-  assert(level_text.ends_with("1,2,3,4,5,6,7,8,9\nHEIGHTSEND\n"));
+  assert(level_text.starts_with("GLEVNW01\r\nHEIGHTS\r\n1,2,3,4,5,6,7,8,9\r\n"));
+  assert(level_text.ends_with("1,2,3,4,5,6,7,8,9\r\nHEIGHTSEND\r\n"));
   std::array<double, 4> controls{0.0, 64.0, 128.0, 192.0};
   std::array<double, 81> overrides{};
   std::vector<double> generated_level;
