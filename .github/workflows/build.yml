@@ -24,10 +24,6 @@ jobs:
             artifact: TerrainGenerator-linux-x64
             binary: TerrainGenerator
             package: TerrainGenerator-linux-x64.tar.gz
-          - os: macos-14
-            artifact: TerrainGenerator-macos-x64
-            binary: TerrainGenerator
-            package: TerrainGenerator-macos-x64.tar.gz
 
     steps:
       - uses: actions/checkout@v5
