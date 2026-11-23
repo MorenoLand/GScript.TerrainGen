@@ -40,8 +40,8 @@ ctest --test-dir build -C Release --output-on-failure
 bin/TerrainGenerator --self-test
 ```
 
-`tests/terrain_parity.py` regenerates `original/myworld.gmap` and compares it byte for byte. It
-requires that reference file, which is not tracked.
+`tests/terrain_parity.py` regenerates `tests/reference/myworld.gmap` and compares it byte for byte.
+`ctest` runs it when Python is available.
 
 `tests/zoom_parity.py` checks the zoom projection constants against the recomp renderer
 `f_0044d848`; `ctest` runs it when Python is available.
