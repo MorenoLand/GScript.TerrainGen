@@ -17,7 +17,7 @@ def digest(path):
 
 def main():
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run([str(ROOT / "bin" / "TerrainGenerator.exe"), str(SOURCE), str(OUTPUT), "--generate"], check=True)
+    subprocess.run([str(EXE), str(SOURCE), str(OUTPUT), "--generate"], check=True)
     expected, actual = digest(SOURCE), digest(OUTPUT)
     print("parity: %s %s" % ("pass" if expected == actual else "fail", actual))
     return 0 if expected == actual else 1
